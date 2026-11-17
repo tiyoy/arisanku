@@ -32,15 +32,16 @@ interface TableTabProps {
 }
 
 export const TableTab: React.FC<TableTabProps> = ({ onOpenReminderModal }) => {
-const {
-  activeGroup,
-  setRound,
-  toggleMemberPayment,
-  markAllPaid,
-  addMember,
-  removeMember,
-  updateMember,
-} = useArisan();
+  const {
+    activeGroup,
+    setRound,
+    toggleMemberPayment,
+    markAllPaid,
+    addMember,
+    removeMember,
+    updateMember,
+    toggleEntryWon,
+  } = useArisan();
 
   const [globalFilter, setGlobalFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'unpaid' | 'paid'>('all');
@@ -167,13 +168,21 @@ const editingMember = editingMemberId
                   return (
                     <span
                       key={e.id}
-                      className={`px-2 py-0.5 rounded text-[10px] font-medium border flex-shrink-0 ${
-                        isPaid
-                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-300 dark:border-emerald-700/60'
-                          : 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/20 dark:text-rose-300 dark:border-rose-700/60'
+                      className={`px-2 py-0.5 rounded text-[10px] font-medium border flex-shrink-0 cursor-pointer transition ${
+                        e.hasWon
+                          ? 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/20 dark:text-amber-300 dark:border-amber-700/60 hover:bg-amber-100'
+                          : isPaid
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-300 dark:border-emerald-700/60 hover:bg-emerald-100'
+                            : 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/20 dark:text-rose-300 dark:border-rose-700/60 hover:bg-rose-100'
                       }`}
+                      onClick={() => toggleEntryWon(member.id, e.id)}
+                      title={
+                        e.hasWon
+                          ? `Sudah menang (Putaran ${e.wonInRound}) — klik untuk batal`
+                          : `Tandai ${label} sudah menang — klik untuk tandai`
+                      }
                     >
-                      {e.hasWon ? '✔ ' : ''}{label}
+                      {e.hasWon ? '✔👑 ' : '✔ '}{label}
                     </span>
                   );
                 })}

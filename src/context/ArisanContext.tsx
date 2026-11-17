@@ -70,6 +70,11 @@ interface ArisanContextType {
     name: string,
   ) => { ok: boolean; message?: string };
   updateMember: (memberId: number, data: { name?: string; phone?: string }) => void;
+  toggleEntryWon: (
+    memberId: number,
+    entryId: number,
+    targetRound?: number,
+  ) => void;
   setPaymentMode: (mode: PaymentMode) => void;
   toggleTheme: () => void;
   exportBackup: () => void;
@@ -736,6 +741,61 @@ export const ArisanProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const toggleEntryWon = (
+    memberId: number,
+    entryId: number,
+    targetRound?: number,
+  ) => {
+    if (!activeGroup) return;
+    const rNum = targetRound ?? activeGroup.currentRound;
+    const member = activeGroup.members.find((m) => m.id === memberId);
+    if (!member) return;
+
+    const entry = member.entries.find((e) => e.id === entryId);
+    if (!entry) return;
+
+    const newWon = !entry.hasWon;
+
+    sound.playPop();
+
+    const updatedMembers = activeGroup.members.map((m) =>
+      m.id === memberId
+        ? {
+            ...m,
+            entries: m.entries.map((e) =>
+              e.id === entryId
+                ? { ...e, hasWon: newWon, wonInRound: newWon ? rNum : undefined }
+                : e,
+            ),
+          }
+        : m,
+    );
+
+    const foundLabel = entry.name;
+    const newLog: ArisanActivityLog = {
+      id: "log-" + Date.now(),
+      groupId: activeGroup.id,
+      text: newWon
+        ? `${foundLabel} ditandai sudah pernah menang (Putaran ${rNum}).`
+        : `Tandai menang ${foundLabel} dibatalkan.`,
+      type: "system",
+      timestamp: new Date().toISOString(),
+    };
+
+    const updatedGroup: ArisanGroup = {
+      ...activeGroup,
+      members: updatedMembers,
+    };
+
+    setState((prev) => ({
+      ...prev,
+      groups: prev.groups.map((g) =>
+        g.id === updatedGroup.id ? updatedGroup : g,
+      ),
+      activityLogs: [newLog, ...prev.activityLogs],
+    }));
+  };
+
   const setPaymentMode = (mode: PaymentMode) => {
     if (!activeGroup) return;
     updateGroup({ ...activeGroup, paymentMode: mode });
@@ -908,6 +968,7 @@ export const ArisanProvider: React.FC<{ children: React.ReactNode }> = ({
         removeEntry,
         renameEntry,
         updateMember,
+        toggleEntryWon,
         setPaymentMode,
         toggleTheme,
         exportBackup,

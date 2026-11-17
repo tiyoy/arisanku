@@ -98,10 +98,11 @@ Aplikasi ini telah dirombak secara menyeluruh (_full revamp_) dari segi teknolog
 
 | Kategori            | Fitur                        | Keterangan                                                                                                                                           |
 | :------------------ | :--------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Grup & Anggota**  | Multi-Kelompok Arisan        | Kelola banyak grup arisan tanpa batas                                                                                                                |
-|                     | Tempel Nama dari WA          | Ekstraksi otomatis daftar peserta dari chat WhatsApp                                                                                                 |
-|                     | **Multi-Undian per Anggota** | Satu nama bisa daftar lebih dari 1 undian dengan nama berbeda; dana otomatis dikalikan lipat jumlah undian (cth: 2 undian × Rp 100.000 = Rp 200.000) |
-|                     | Pengaturan Uang Kas          | Pisahkan iuran kotor, upah pengelola, dan hadiah bersih                                                                                              |
+| **Grup & Anggota** | Multi-Kelompok Arisan | Kelola banyak grup arisan tanpa batas |
+| | Tempel Nama dari WA | Ekstraksi otomatis daftar peserta dari chat WhatsApp |
+| | **Multi-Undian per Anggota** | Satu nama bisa daftar lebih dari 1 undian dengan nama berbeda; dana otomatis dikalikan lipat jumlah undian (cth: 2 undian × Rp 100.000 = Rp 200.000) |
+| | **Tandai Pemenang Lama** | Tandai nama undian yang sudah menang sebelum pakai aplikasi tanpa menghapusnya dari tabel iuran, agar tidak ikut diundian lagi |
+| | Pengaturan Uang Kas | Pisahkan iuran kotor, upah pengelola, dan hadiah bersih |
 | **Pencatatan**      | TanStack Table               | Tabel responsif dengan pencarian nama & filter status                                                                                                |
 |                     | Sekali Sentuh Lunas          | Centang status setoran per individu atau tandai semua lunas                                                                                          |
 | **Pengundian**      | Simulator Mesin Undi         | Animasi putaran acak adil dengan suara & konfeti                                                                                                     |
@@ -173,6 +174,11 @@ Di tab **Iuran**, setiap nama anggota dilengkapi tombol sunting (🖉) di sampin
    - Setiap undian diberi warna hijau (Lunas) atau merah (Belum).
 3. Klik tombol status anggota (`x/y Nama`) untuk menandai **semua** nama undian anggota tersebut lunas/belum sekaligus.
 4. Di atas tabel tertera total terkumpul vs target iuran putaran ini.
+
+**Tandai pemenang lama (sebelum pakai aplikasi)**
+- Jika ada nama undian yang sudah pernah menang sebelum aplikasi ini digunakan, klik chip nama undian tersebut di tabel iuran → akan ditandai "Sudah menang" dengan warna orange.
+- Nama undian yang sudah ditandai menang **tidak akan ikut diundian lagi** secara otomatis, namun tetap tetap muncul di tabel iuran dan namanya tidak dihapus.
+- Klik lagi pada chip yang sama untuk membatalkan tanda menang.
 
 ### Langkah 4: Undi Pemenang
 
